@@ -1,0 +1,61 @@
+.listContainer {
+  display: flex;
+  padding: 0 4px;
+  margin-top: 8px;
+}
+
+.listContainer > div {
+  flex: 1;
+}
+
+.list {
+  padding: 12px 8px;
+  margin: 0 8px;
+  background-color: #ddd;
+  height: 400px;
+}
+
+.list .list__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list .list__header .list__header__left {
+  display: flex;
+  align-items: center;
+}
+.list .list__header .list__header__left .list__header__left__count {
+  background-color: #aaa;
+  padding: 4px;
+  border-radius: 50%;
+}
+
+.list .list__header .list__header__left > div:nth-child(2) {
+  margin-left: 4px;
+}
+
+.list .list__header .list__header__right {
+  display: flex;
+}
+.list .list__header .list__header__right > div:nth-child(2) {
+  margin-left: 4px;
+}
+
+.list .list__cardContainer__card {
+  padding: 8px 10px;
+  margin-top: 12px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 3px 1px 13px 0px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 3px 1px 13px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 3px 1px 13px 0px rgba(0, 0, 0, 0.25);
+}
+
+.list .list__cardContainer__card .list__cardContainer__card__title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list .list__cardContainer__card .list__cardContainer__card__date {
+  margin-top: 20px;
+}
