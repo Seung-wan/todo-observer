@@ -6,6 +6,7 @@ class TodoModel extends Observable {
   doneTodos = [];
 
   addTodoByType(type, todo) {
+    console.log('addTodoByType');
     const target = this.getTodosByType(type);
     target.unshift(todo);
 

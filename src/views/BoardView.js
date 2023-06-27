@@ -17,8 +17,8 @@ export default class BoardView {
     const openForm = $(`.list__${this.type}__header__right__open`);
     const addTodo = $(`.list__form__${this.type}__add`);
     const textarea = $(`.list__form__${this.type}__textarea`);
+    addTodo?.addEventListener('click', () => todoModel.addTodoByType(this.type, textarea.value));
     openForm.addEventListener('click', this.handleClickOpen.bind(this));
-    addTodo.addEventListener('click', () => todoModel.addTodoByType(this.type, textarea.value));
   }
 
   handleClickOpen() {
@@ -51,13 +51,19 @@ export default class BoardView {
               <div>X</div>
             </div>
           </div>
-          <div class="list__form">
-            <textarea class="list__form__${this.type}__textarea"></textarea>
-            <div>
-              <button type="button" class="list__form__${this.type}__add">Add</button>
-              <button type="button">Cancel</button>
+          ${this.open
+            ? `
+            <div class="list__form">
+              <textarea class="list__form__${this.type}__textarea"></textarea>
+              <div>
+                <button type="button" class="list__form__${this.type}__add">
+                  Add
+                </button>
+                <button type="button">Cancel</button>
+              </div>
             </div>
-          </div>
+            `
+            : ''}
 
           <ul class="list__cardContainer">
             ${this.todos
