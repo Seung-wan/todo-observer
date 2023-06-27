@@ -15,7 +15,6 @@ export default class TodoView {
   }
 
   render() {
-    console.log('render');
     const app = $('#root');
     app.innerHTML = this.getTemplate();
 
