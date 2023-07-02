@@ -22,10 +22,18 @@ class TodoModel extends Observable {
     return target;
   }
 
-  deleteTodoByType(type, todo) {
-    const target = this.getTodosByType(type);
+  changeTodoByType(type, targetIndex, newTitle) {
+    let target = this.getTodosByType(type);
+    target[targetIndex] = newTitle;
 
-    target = target.filter((_todo) => _todo !== todo);
+    this.notify();
+  }
+
+  deleteTodoByType(type, targetIndex) {
+    let target = this.getTodosByType(type);
+    target.splice(targetIndex, 1);
+
+    this.notify();
   }
 }
 

@@ -12,7 +12,7 @@
   padding: 12px 8px;
   margin: 0 8px;
   background-color: #ddd;
-  height: 400px;
+  min-height: 640px;
 }
 
 .list .list__header {
@@ -41,6 +41,14 @@
   margin-left: 4px;
 }
 
+.list .list__header .list__header__right .open-button:hover .open-icon .plus {
+  fill: green;
+}
+
+.list .list__header .list__header__right .close-icon {
+  margin-left: 4px;
+}
+
 .list .list__cardContainer__card {
   padding: 8px 10px;
   margin-top: 12px;
@@ -56,6 +64,52 @@
   justify-content: space-between;
 }
 
+.list .list__cardContainer__card .list__cardContainer__card__title .list__cardContainer__card__title__left {
+  display: flex;
+  align-items: center;
+}
+
+.list .list__cardContainer__card .list__cardContainer__card__title .list__cardContainer__card__title__left div {
+  margin-left: 4px;
+}
+
 .list .list__cardContainer__card .list__cardContainer__card__date {
   margin-top: 20px;
+}
+
+.list .list__form {
+  margin-top: 8px;
+}
+
+.list .list__form textarea {
+  width: 100%;
+  padding: 6px;
+}
+
+.list .list__form .list__form__button__container {
+  display: flex;
+  width: 100%;
+}
+.list .list__form .list__form__button__container button {
+  flex: 1;
+  height: 32px;
+  border-radius: 4px;
+  padding: 4px;
+  border: 1px solid #aaa;
+  font-weight: 700;
+}
+
+.list .list__form .list__form__button__container button:nth-child(1) {
+  color: #ddd;
+  background-color: #95d3a2;
+}
+.list .list__form .list__form__button__container button:nth-child(1).active {
+  background: green;
+  color: white;
+}
+
+.list .list__form .list__form__button__container button:nth-child(2) {
+  margin-left: 8px;
+  color: black;
+  background-color: #f4f6f8;
 }
