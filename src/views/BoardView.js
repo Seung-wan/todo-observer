@@ -1,6 +1,6 @@
 import { todoView } from './TodoView.js';
 
-import { todoModel } from '../models/TodoModel.js';
+import { ADD_TODO, CHANGE_TODO, DELETE_TODO, todoModel } from '../models/TodoModel.js';
 
 import { $, $all } from '../utils/dom.js';
 
@@ -12,7 +12,7 @@ export default class BoardView {
   constructor(type) {
     this.type = type;
     this.title = this.getTypeLabel(type);
-    this.todos = todoModel.getTodosByType(this.type);
+    this.todos = todoModel.state[this.type];
   }
 
   bindEvents() {
@@ -26,7 +26,7 @@ export default class BoardView {
     const editTextarea = $('.edit__textarea');
     const closeModalButton = $(`.close__${this.type}__button`);
     $('.list__cardContainer__card')?.addEventListener('dragstart', () => {});
-    addTodo?.addEventListener('click', () => todoModel.addTodoByType(this.type, textarea.value));
+    addTodo?.addEventListener('click', this.handleClickAdd.bind(this));
     deleteTodos.forEach((deleteTodo) => {
       deleteTodo?.addEventListener('click', this.handleClickDelete.bind(this));
     });
@@ -43,6 +43,11 @@ export default class BoardView {
     closeModalButton?.addEventListener('click', this.handleClickCloseModalButton.bind(this));
   }
 
+  handleClickAdd() {
+    const textarea = $(`.list__form__${this.type}__textarea`);
+    todoModel.dispatch({ type: ADD_TODO, payload: { todoType: this.type, text: textarea.value } });
+  }
+
   handleClickToggle() {
     this.open = !this.open;
     todoView.render();
@@ -56,7 +61,7 @@ export default class BoardView {
     if (window.confirm('선택하신 카드를 삭제하시겠습니까?')) {
       const targetIndex = event.currentTarget.dataset.index;
 
-      todoModel.deleteTodoByType(this.type, targetIndex);
+      todoModel.dispatch({ type: DELETE_TODO, payload: { todoType: this.type, index: targetIndex } });
     }
   }
 
@@ -68,8 +73,11 @@ export default class BoardView {
 
   handleClickEdit() {
     const editTextarea = $('.edit__textarea');
+    todoModel.dispatch({
+      type: CHANGE_TODO,
+      payload: { todoType: this.type, index: this.selectedTodoIndex, text: editTextarea.value },
+    });
     this.editModalOpen = false;
-    todoModel.changeTodoByType(this.type, this.selectedTodoIndex, editTextarea.value);
     todoView.render();
   }
 

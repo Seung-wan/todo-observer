@@ -1,40 +1,56 @@
 import Observable from './Observable.js';
 
+export const ADD_TODO = 'ADD_TODO';
+export const CHANGE_TODO = 'CHANGE_TODO';
+export const DELETE_TODO = 'DELETE_TODO';
+
 class TodoModel extends Observable {
-  todos = [];
-  doingTodos = [];
-  doneTodos = [];
-
-  addTodoByType(type, todo) {
-    const target = this.getTodosByType(type);
-    target.unshift(todo);
-
-    this.notify();
+  constructor(reducer, initialState = {}) {
+    super();
+    this.state = initialState;
+    this.reducer = reducer;
   }
 
-  getTodosByType(type) {
-    const target = {
-      todo: this.todos,
-      doing: this.doingTodos,
-      done: this.doneTodos,
-    }[type];
-
-    return target;
-  }
-
-  changeTodoByType(type, targetIndex, newTitle) {
-    let target = this.getTodosByType(type);
-    target[targetIndex] = newTitle;
-
-    this.notify();
-  }
-
-  deleteTodoByType(type, targetIndex) {
-    let target = this.getTodosByType(type);
-    target.splice(targetIndex, 1);
+  dispatch(action) {
+    this.state = this.reducer(this.state, action);
 
     this.notify();
   }
 }
 
-export const todoModel = new TodoModel();
+const initialState = {
+  todo: [],
+  doing: [],
+  done: [],
+};
+
+const todoReducer = (state, action) => {
+  switch (action.type) {
+    case ADD_TODO: {
+      const targetTodo = state[action.payload.todoType];
+      targetTodo.unshift(action.payload.text);
+
+      return state;
+    }
+
+    case CHANGE_TODO: {
+      const targetTodo = state[action.payload.todoType];
+      targetTodo[action.payload.index] = action.payload.text;
+
+      return state;
+    }
+
+    case DELETE_TODO: {
+      const targetTodo = state[action.payload.todoType];
+      targetTodo.splice(action.payload.index, 1);
+
+      return state;
+    }
+
+    default: {
+      return state;
+    }
+  }
+};
+
+export const todoModel = new TodoModel(todoReducer, initialState);
