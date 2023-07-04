@@ -2,6 +2,11 @@ import { todoView } from './TodoView.js';
 
 import { ADD_TODO, CHANGE_TODO, DELETE_TODO, todoModel } from '../models/TodoModel.js';
 
+import HeaderView from './board/HeaderView.js';
+import FormView from './board/FormView.js';
+import ItemView from './board/ItemView.js';
+import EditModalView from './board/EditModalView.js';
+
 import { $, $all } from '../utils/dom.js';
 
 export default class BoardView {
@@ -13,6 +18,11 @@ export default class BoardView {
     this.type = type;
     this.title = this.getTypeLabel(type);
     this.todos = todoModel.state[this.type];
+
+    this.headerView = new HeaderView(this.todos, this.title, this.type);
+    this.formView = new FormView(this.type);
+    this.itemView = new ItemView(this.type);
+    this.editModalView = new EditModalView(this.type);
   }
 
   bindEvents() {
@@ -25,7 +35,7 @@ export default class BoardView {
     const editTodos = Array.from($all('.edit__button'));
     const editTextarea = $('.edit__textarea');
     const closeModalButton = $(`.close__${this.type}__button`);
-    $('.list__cardContainer__card')?.addEventListener('dragstart', () => {});
+
     addTodo?.addEventListener('click', this.handleClickAdd.bind(this));
     deleteTodos.forEach((deleteTodo) => {
       deleteTodo?.addEventListener('click', this.handleClickDelete.bind(this));
@@ -135,93 +145,21 @@ export default class BoardView {
       /* HTML */
       `
         <div class="list">
-          <div class="list__header">
-            <div class="list__header__left">
-              <div class="list__header__left__count">${this.todos.length}</div>
-              <div>${this.title}</div>
-            </div>
-            <div class="list__header__right">
-              <button type="button" class="list__${this.type}__header__right__open__button open-button">
-                <svg
-                  class="list__${this.type}__header__right__open__icon open-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="1em"
-                  viewBox="0 0 448 512"
-                >
-                  <path
-                    class="plus"
-                    d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
-                  />
-                </svg>
-              </button>
-              <button type="button" class="list__header__right__close__button">
-                <img
-                  class="list__${this.type}__header__right__close close-icon"
-                  src="src/assets/svgs/xMark.svg"
-                  alt=""
-                />
-              </button>
-            </div>
-          </div>
+          ${this.headerView.getTemplate()}
           ${this.open
-            ? `
-            <div class="list__form">
-              <textarea class="list__form__${this.type}__textarea" placeholder="Enter a note" maxlength="500"></textarea>
-              <div class="list__form__button__container">
-                <button type="button" class="list__form__${this.type}__add">
-                  Add
-                </button>
-                <button type="button" class="list__form__${this.type}__close">Cancel</button>
-              </div>
-            </div>
-            `
+            ? ` ${this.formView.getTemplate()}
+               `
             : ''}
 
           <ul class="list__cardContainer">
             ${this.todos
               .map((todo, index) => {
-                return (
-                  /* HTML */
-                  `
-                    <li class="list__cardContainer__card ${this.type}__card" draggable="true" data-index=${index}>
-                      <div class="list__cardContainer__card__title">
-                        <div class="list__cardContainer__card__title__left">
-                          <img src="src/assets/svgs/paper.svg" alt="" />
-                          <div>${todo}</div>
-                        </div>
-                        <button class="list__cardContainer__card__title__${this.type}__delete" data-index=${index}>
-                          <img src="src/assets/svgs/xMark.svg" alt="" />
-                        </button>
-                      </div>
-                      <div class="list__cardContainer__card__date">2023-06-21</div>
-                    </li>
-                  `
-                );
+                return this.itemView.getTemplate(todo, index);
               })
               .join('')}
           </ul>
         </div>
-
-        ${this.editModalOpen
-          ? /* HTML */
-            `<div class="modal__container">
-              <div class="modal__content">
-                <div class="modal__header">
-                  <div>Edit note</div>
-                  <button type="button" class="close__${this.type}__button">
-                    <img src="src/assets/svgs/xMark.svg" />
-                  </button>
-                </div>
-                <div class="modal__body">
-                  <div>Note</div>
-                  <textarea class="edit__textarea" maxlength="500"></textarea>
-                  <div class="modal__footer">
-                    <button type="button" class="edit__button">Save note</button>
-                  </div>
-                </div>
-              </div>
-            </div>`
-          : ''}
+        ${this.editModalOpen ? this.editModalView.getTemplate() : ''}
       `
     );
   }
