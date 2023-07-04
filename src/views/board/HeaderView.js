@@ -1,9 +1,28 @@
+import { todoView } from '../TodoView.js';
+
+import { $ } from '../../utils/dom.js';
+
 export default class HeaderView {
   constructor(todos, title, type) {
     this.todos = todos;
     this.title = title;
     this.type = type;
   }
+
+  bindEvents() {
+    const openForm = $(`.list__${this.type}__header__right__open__button`);
+
+    openForm.addEventListener('click', this.handleClickOpen.bind(this));
+  }
+
+  handleClickOpen() {
+    const board = todoView.getBoard(this.type);
+
+    board.open = true;
+
+    todoView.render();
+  }
+
   getTemplate() {
     return (
       /* HTML */

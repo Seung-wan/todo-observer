@@ -26,23 +26,20 @@ export default class BoardView {
   }
 
   bindEvents() {
-    const openForm = $(`.list__${this.type}__header__right__open__button`);
-    const addTodo = $(`.list__form__${this.type}__add`);
+    this.headerView.bindEvents();
+    this.formView.bindEvents();
+
     const deleteTodos = Array.from($all(`.list__cardContainer__card__title__${this.type}__delete`));
-    const closeTodo = $(`.list__form__${this.type}__close`);
     const textarea = $(`.list__form__${this.type}__textarea`);
     const cards = Array.from($all(`.${this.type}__card`));
     const editTodos = Array.from($all('.edit__button'));
     const editTextarea = $('.edit__textarea');
     const closeModalButton = $(`.close__${this.type}__button`);
 
-    addTodo?.addEventListener('click', this.handleClickAdd.bind(this));
     deleteTodos.forEach((deleteTodo) => {
       deleteTodo?.addEventListener('click', this.handleClickDelete.bind(this));
     });
-    closeTodo?.addEventListener('click', this.handleClickClose.bind(this));
     textarea?.addEventListener('input', this.handleChangeTextarea.bind(this));
-    openForm.addEventListener('click', this.handleClickToggle.bind(this));
     cards?.forEach((card) => {
       card?.addEventListener('dblclick', this.handleClickCard.bind(this));
     });
@@ -53,18 +50,8 @@ export default class BoardView {
     closeModalButton?.addEventListener('click', this.handleClickCloseModalButton.bind(this));
   }
 
-  handleClickAdd() {
-    const textarea = $(`.list__form__${this.type}__textarea`);
-    todoModel.dispatch({ type: ADD_TODO, payload: { todoType: this.type, text: textarea.value } });
-  }
-
-  handleClickToggle() {
-    this.open = !this.open;
-    todoView.render();
-  }
-  handleClickClose() {
-    this.open = false;
-    todoView.render();
+  set open(bool) {
+    this.open = bool;
   }
 
   handleClickDelete(event) {
@@ -164,3 +151,4 @@ export default class BoardView {
     );
   }
 }
+const boardView = new BoardView();

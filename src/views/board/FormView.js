@@ -1,6 +1,34 @@
+import { ADD_TODO, todoModel } from '../../models/TodoModel.js';
+
+import { $ } from '../../utils/dom.js';
+
+import { todoView } from '../TodoView.js';
+
 export default class FormView {
   constructor(type) {
     this.type = type;
+  }
+
+  bindEvents() {
+    const addTodo = $(`.list__form__${this.type}__add`);
+    const closeForm = $(`.list__form__${this.type}__close`);
+
+    addTodo?.addEventListener('click', this.handleClickAdd.bind(this));
+    closeForm?.addEventListener('click', this.handleClickClose.bind(this));
+  }
+
+  handleClickAdd() {
+    const textarea = $(`.list__form__${this.type}__textarea`);
+
+    todoModel.dispatch({ type: ADD_TODO, payload: { todoType: this.type, text: textarea.value } });
+  }
+
+  handleClickClose() {
+    const board = todoView.getBoard(this.type);
+
+    board.open = false;
+
+    todoView.render();
   }
 
   getTemplate() {
