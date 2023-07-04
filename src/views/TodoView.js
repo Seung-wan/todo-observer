@@ -1,5 +1,3 @@
-// TodoView.js
-
 import BoardView from './BoardView.js';
 
 import { $ } from '../utils/dom.js';
