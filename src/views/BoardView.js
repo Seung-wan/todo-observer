@@ -1,9 +1,10 @@
-import { todoModel } from '../models/TodoModel.js';
+import { ADD_TODO, DELETE_TODO, todoModel } from '../models/TodoModel.js';
 
 import HeaderView from './board/HeaderView.js';
 import FormView from './board/FormView.js';
 import ItemView from './board/ItemView.js';
 import EditModalView from './board/EditModalView.js';
+import { $, $all } from '../utils/dom.js';
 
 function getTypeLabel(type) {
   const label = {
@@ -52,6 +53,33 @@ export default class BoardView {
     this.formView.bindEvents();
     this.itemView.bindEvents();
     this.editModalView.bindEvents();
+
+    const container = $(`.${this.type}__list`);
+
+    container.addEventListener('dragover', this.handleDragover.bind(this, container));
+    container.addEventListener('drop', this.handleDrop.bind(this, container));
+  }
+
+  handleDragover(container, event) {
+    event.preventDefault();
+
+    const dragging = $('.dragging');
+    container.appendChild(dragging);
+  }
+
+  handleDrop(container, event) {
+    event.preventDefault();
+
+    const dragging = $('.dragging');
+    const containerType = container.dataset.type;
+
+    const type = dragging.dataset.type;
+    const index = dragging.dataset.index;
+
+    const todo = todoModel.state[this.type][index];
+
+    todoModel.dispatch({ type: ADD_TODO, payload: { todoType: containerType, text: todo } });
+    todoModel.dispatch({ type: DELETE_TODO, payload: { todoType: type, index } });
   }
 
   getTemplate() {
