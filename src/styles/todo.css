@@ -113,3 +113,7 @@
   color: black;
   background-color: #f4f6f8;
 }
+
+.dragging {
+  opacity: 0.5;
+}

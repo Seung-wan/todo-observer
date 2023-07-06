@@ -12,13 +12,14 @@ export default class TodoView {
     todoModel.subscribe(this.render.bind(this));
   }
 
-  render() {
-    const app = $('#root');
-    app.innerHTML = this.getTemplate();
+  getBoard(type) {
+    const board = {
+      todo: this.todoBoard,
+      doing: this.doingBoard,
+      done: this.doneBoard,
+    }[type];
 
-    this.todoBoard.bindEvents();
-    this.doingBoard.bindEvents();
-    this.doneBoard.bindEvents();
+    return board;
   }
 
   getTemplate() {
@@ -32,6 +33,15 @@ export default class TodoView {
         </div>
       `
     );
+  }
+
+  render() {
+    const app = $('#root');
+    app.innerHTML = this.getTemplate();
+
+    this.todoBoard.bindEvents();
+    this.doingBoard.bindEvents();
+    this.doneBoard.bindEvents();
   }
 }
 
