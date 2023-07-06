@@ -28,7 +28,13 @@ const todoReducer = (state, action) => {
   switch (action.type) {
     case ADD_TODO: {
       const targetTodo = state[action.payload.todoType];
-      targetTodo.unshift(action.payload.text);
+
+      if (action.payload.order === 'front') {
+        targetTodo.unshift(action.payload.text);
+      }
+      if (action.payload.order === 'back') {
+        targetTodo.push(action.payload.text);
+      }
 
       return state;
     }

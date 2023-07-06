@@ -22,7 +22,7 @@ export default class FormView {
   handleClickAdd() {
     const textarea = $(`.list__form__${this.type}__textarea`);
 
-    todoModel.dispatch({ type: ADD_TODO, payload: { todoType: this.type, text: textarea.value } });
+    todoModel.dispatch({ type: ADD_TODO, payload: { todoType: this.type, text: textarea.value, order: 'front' } });
   }
 
   handleClickClose() {

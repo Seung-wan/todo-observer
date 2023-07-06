@@ -78,7 +78,7 @@ export default class BoardView {
 
     const todo = todoModel.state[type][index];
 
-    todoModel.dispatch({ type: ADD_TODO, payload: { todoType: containerType, text: todo } });
+    todoModel.dispatch({ type: ADD_TODO, payload: { todoType: containerType, text: todo, order: 'back' } });
     todoModel.dispatch({ type: DELETE_TODO, payload: { todoType: type, index } });
   }
 
