@@ -18,7 +18,7 @@ export default class HeaderView {
   handleClickOpen() {
     const board = todoView.getBoard(this.type);
 
-    board.open = true;
+    board.open = !board.open;
 
     todoView.render();
   }

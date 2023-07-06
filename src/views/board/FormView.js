@@ -12,9 +12,11 @@ export default class FormView {
   bindEvents() {
     const addTodo = $(`.list__form__${this.type}__add`);
     const closeForm = $(`.list__form__${this.type}__close`);
+    const textarea = $(`.list__form__${this.type}__textarea`);
 
     addTodo?.addEventListener('click', this.handleClickAdd.bind(this));
     closeForm?.addEventListener('click', this.handleClickClose.bind(this));
+    textarea?.addEventListener('input', this.handleChangeTextarea.bind(this));
   }
 
   handleClickAdd() {
@@ -29,6 +31,23 @@ export default class FormView {
     board.open = false;
 
     todoView.render();
+  }
+
+  handleChangeTextarea(event) {
+    const { value } = event.target;
+
+    const addTodoButton = $(`.list__form__${this.type}__add`);
+
+    if (value.length > 1) {
+      return;
+    }
+
+    if (!value) {
+      addTodoButton.classList.remove('active');
+      return;
+    }
+
+    addTodoButton.classList.add('active');
   }
 
   getTemplate() {
