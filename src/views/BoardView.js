@@ -76,7 +76,7 @@ export default class BoardView {
     const type = dragging.dataset.type;
     const index = dragging.dataset.index;
 
-    const todo = todoModel.state[this.type][index];
+    const todo = todoModel.state[type][index];
 
     todoModel.dispatch({ type: ADD_TODO, payload: { todoType: containerType, text: todo } });
     todoModel.dispatch({ type: DELETE_TODO, payload: { todoType: type, index } });
