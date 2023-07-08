@@ -18,6 +18,11 @@ export default class ItemView {
     cards?.forEach((card) => {
       card?.addEventListener('dblclick', this.handleClickCard.bind(this));
     });
+
+    cards?.forEach((card) => {
+      card?.addEventListener('dragstart', () => this.handleDragstart(card));
+      card?.addEventListener('dragend', () => this.handleDragend(card));
+    });
   }
 
   handleClickDelete(event) {
@@ -34,6 +39,14 @@ export default class ItemView {
 
     board.editModalOpen = true;
     todoView.render();
+  }
+
+  handleDragstart(card) {
+    card.classList.add('dragging');
+  }
+
+  handleDragend(card) {
+    card.classList.remove('dragging');
   }
 
   getTemplate(todo, index) {
