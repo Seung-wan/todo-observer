@@ -12,7 +12,6 @@
   padding: 12px 8px;
   margin: 0 8px;
   background-color: #ddd;
-  min-height: 640px;
 }
 
 .list .list__header {
@@ -47,6 +46,10 @@
 
 .list .list__header .list__header__right .close-icon {
   margin-left: 4px;
+}
+
+.list .list__cardContainer {
+  min-height: 640px;
 }
 
 .list .list__cardContainer__card {
