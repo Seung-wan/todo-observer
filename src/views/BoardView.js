@@ -4,7 +4,8 @@ import HeaderView from './board/HeaderView.js';
 import FormView from './board/FormView.js';
 import ItemView from './board/ItemView.js';
 import EditModalView from './board/EditModalView.js';
-import { $, $all } from '../utils/dom.js';
+
+import { $ } from '../utils/dom.js';
 
 function getTypeLabel(type) {
   const label = {
@@ -54,17 +55,36 @@ export default class BoardView {
     this.itemView.bindEvents();
     this.editModalView.bindEvents();
 
-    const container = $(`.${this.type}__list`);
+    const container = $(`.${this.type}__list__cardContainer`);
 
     container.addEventListener('dragover', this.handleDragover.bind(this, container));
     container.addEventListener('drop', this.handleDrop.bind(this, container));
   }
 
+  getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')];
+
+    return draggableElements.reduce(
+      (closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      },
+      { offset: Number.NEGATIVE_INFINITY },
+    ).element;
+  }
+
   handleDragover(container, event) {
     event.preventDefault();
 
+    const afterElement = this.getDragAfterElement(container, event.clientY);
+
     const dragging = $('.dragging');
-    container.appendChild(dragging);
+    container.insertBefore(dragging, afterElement);
   }
 
   handleDrop(container, event) {
@@ -86,14 +106,14 @@ export default class BoardView {
     return (
       /* HTML */
       `
-        <div class="${this.type}__list list" data-type=${this.type}>
+        <div class="${this.type}__list list">
           ${this.headerView.getTemplate()}
           ${this.open
             ? ` ${this.formView.getTemplate()}
                `
             : ''}
 
-          <ul class="list__cardContainer">
+          <ul class="${this.type}__list__cardContainer list__cardContainer" data-type=${this.type}>
             ${this.todos
               .map((todo, index) => {
                 return this.itemView.getTemplate(todo, index);

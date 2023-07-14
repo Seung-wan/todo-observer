@@ -53,7 +53,7 @@ export default class ItemView {
     return (
       /*HTML*/
       `
-      <li class="list__cardContainer__card ${this.type}__card" draggable="true" data-type=${this.type} data-index=${index} >
+      <li class="list__cardContainer__card ${this.type}__card draggable" draggable="true" data-type=${this.type} data-index=${index} >
       <div class="list__cardContainer__card__title">
         <div class="list__cardContainer__card__title__left">
           <img src="src/assets/svgs/paper.svg" alt="" />
