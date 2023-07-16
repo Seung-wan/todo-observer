@@ -1,16 +1,21 @@
 import { todoView } from '../TodoView.js';
 
 import { $ } from '../../utils/dom.js';
+import { TodoType } from '../../models/TodoModel.js';
 
 export default class HeaderView {
-  constructor(todos, title, type) {
+  todos: string[];
+  title: string;
+  type: TodoType;
+
+  constructor(todos: string[], title: string, type: TodoType) {
     this.todos = todos;
     this.title = title;
     this.type = type;
   }
 
   bindEvents() {
-    const openForm = $(`.list__${this.type}__header__right__open__button`);
+    const openForm = $(`.list__${this.type}__header__right__open__button`) as HTMLButtonElement;
 
     openForm.addEventListener('click', this.handleClickOpen.bind(this));
   }
@@ -55,5 +60,3 @@ export default class HeaderView {
     );
   }
 }
-
-export const header = new HeaderView();

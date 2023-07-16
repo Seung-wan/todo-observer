@@ -1,11 +1,13 @@
-import { ADD_TODO, todoModel } from '../../models/TodoModel.js';
+import { ADD_TODO, TodoType, todoModel } from '../../models/TodoModel.js';
 
 import { $ } from '../../utils/dom.js';
 
 import { todoView } from '../TodoView.js';
 
 export default class FormView {
-  constructor(type) {
+  type: TodoType;
+
+  constructor(type: TodoType) {
     this.type = type;
   }
 
@@ -20,9 +22,12 @@ export default class FormView {
   }
 
   handleClickAdd() {
-    const textarea = $(`.list__form__${this.type}__textarea`);
+    const textarea = $(`.list__form__${this.type}__textarea`) as HTMLTextAreaElement;
 
-    todoModel.dispatch({ type: ADD_TODO, payload: { todoType: this.type, text: textarea.value, order: 'front' } });
+    todoModel.dispatch({
+      type: ADD_TODO,
+      payload: { _brand: 'add', todoType: this.type, text: textarea.value, order: 'front' },
+    });
   }
 
   handleClickClose() {
@@ -33,10 +38,10 @@ export default class FormView {
     todoView.render();
   }
 
-  handleChangeTextarea(event) {
+  handleChangeTextarea(event: any) {
     const { value } = event.target;
 
-    const addTodoButton = $(`.list__form__${this.type}__add`);
+    const addTodoButton = $(`.list__form__${this.type}__add`) as HTMLButtonElement;
 
     if (value.length > 1) {
       return;

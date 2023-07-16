@@ -2,7 +2,7 @@ import { $ } from '../utils/dom.js';
 
 export default class HeaderView {
   render() {
-    const header = $('#header');
+    const header = $('#header') as HTMLElement;
 
     header.innerHTML = this.getTemplate();
   }

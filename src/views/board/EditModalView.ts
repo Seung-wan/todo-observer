@@ -1,9 +1,11 @@
-import { CHANGE_TODO, todoModel } from '../../models/TodoModel.js';
+import { CHANGE_TODO, TodoType, todoModel } from '../../models/TodoModel.js';
 import { $ } from '../../utils/dom.js';
 import { todoView } from '../TodoView.js';
 
 export default class EditModalView {
-  constructor(type) {
+  type: TodoType;
+
+  constructor(type: TodoType) {
     this.type = type;
   }
 
@@ -17,10 +19,10 @@ export default class EditModalView {
     editButton?.addEventListener('click', this.handleClickEdit.bind(this));
   }
 
-  handleChangeEditTextarea(event) {
+  handleChangeEditTextarea(event: any) {
     const { value } = event.target;
 
-    const editButton = $(`.edit__${this.type}__button`);
+    const editButton = $(`.edit__${this.type}__button`) as HTMLElement;
 
     if (value.length > 1) {
       return;
@@ -43,12 +45,12 @@ export default class EditModalView {
   }
 
   handleClickEdit() {
-    const editTextarea = $(`.edit__${this.type}__textarea`);
+    const editTextarea = $(`.edit__${this.type}__textarea`) as HTMLTextAreaElement;
     const board = todoView.getBoard(this.type);
 
     todoModel.dispatch({
       type: CHANGE_TODO,
-      payload: { todoType: this.type, index: board.selectedTodoIndex, text: editTextarea.value },
+      payload: { _brand: 'change', todoType: this.type, index: board.selectedTodoIndex!, text: editTextarea.value },
     });
 
     board.editModalOpen = false;
