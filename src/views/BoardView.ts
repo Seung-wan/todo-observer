@@ -102,14 +102,14 @@ export default class BoardView {
     return (
       /* HTML */
       `
-        <div class="${this.type}__list list" data-type=${this.type}>
+        <div class="${this.type}__list list">
           ${this.headerView.getTemplate()}
           ${this.open
             ? ` ${this.formView.getTemplate()}
                `
             : ''}
 
-          <ul class="list__cardContainer">
+          <ul class="${this.type}__list__cardContainer list__cardContainer" data-type=${this.type}>
             ${this.todos
               .map((todo, index) => {
                 return this.itemView.getTemplate(todo, index);
