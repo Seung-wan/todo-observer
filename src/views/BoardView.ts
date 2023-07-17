@@ -4,6 +4,7 @@ import HeaderView from './board/HeaderView.js';
 import FormView from './board/FormView.js';
 import ItemView from './board/ItemView.js';
 import EditModalView from './board/EditModalView.js';
+
 import { $ } from '../utils/dom.js';
 
 function getTypeLabel(type: TodoType) {
@@ -19,7 +20,7 @@ function getTypeLabel(type: TodoType) {
 export default class BoardView {
   private _open = false;
   private _editModalOpen = false;
-  private _selectedTodoIndex = null;
+  private _selectedTodoIndex: number = 0;
   type: TodoType;
   title: string;
   todos: string[];
@@ -44,7 +45,7 @@ export default class BoardView {
     return this._selectedTodoIndex;
   }
 
-  set selectedTodoIndex(index:number;) {
+  set selectedTodoIndex(index: number) {
     this._selectedTodoIndex = index;
   }
 

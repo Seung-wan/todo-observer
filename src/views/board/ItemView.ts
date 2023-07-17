@@ -12,8 +12,8 @@ export default class ItemView {
   }
 
   bindEvents() {
-    const deleteTodos = Array.from($all(`.list__cardContainer__card__title__${this.type}__delete`));
-    const cards = Array.from($all(`.${this.type}__card`)) as HTMLElement[];
+    const deleteTodos = $all(`.list__cardContainer__card__title__${this.type}__delete`);
+    const cards = $all(`.${this.type}__card`);
 
     deleteTodos.forEach((deleteTodo) => {
       deleteTodo?.addEventListener('click', this.handleClickDelete.bind(this));
@@ -45,11 +45,11 @@ export default class ItemView {
     todoView.render();
   }
 
-  handleDragstart(card: HTMLElement) {
+  handleDragstart(card: Element) {
     card.classList.add('dragging');
   }
 
-  handleDragend(card: HTMLElement) {
+  handleDragend(card: Element) {
     card.classList.remove('dragging');
   }
 
