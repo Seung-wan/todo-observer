@@ -1,9 +1,13 @@
 import BoardView from './BoardView.js';
 
 import { $ } from '../utils/dom.js';
-import { todoModel } from '../models/TodoModel.js';
+import { TodoType, todoModel } from '../models/TodoModel.js';
 
 export default class TodoView {
+  todoBoard: BoardView;
+  doingBoard: BoardView;
+  doneBoard: BoardView;
+
   constructor() {
     this.todoBoard = new BoardView('todo');
     this.doingBoard = new BoardView('doing');
@@ -12,7 +16,7 @@ export default class TodoView {
     todoModel.subscribe(this.render.bind(this));
   }
 
-  getBoard(type) {
+  getBoard(type: TodoType) {
     const board = {
       todo: this.todoBoard,
       doing: this.doingBoard,
@@ -36,7 +40,7 @@ export default class TodoView {
   }
 
   render() {
-    const app = $('#root');
+    const app = $('#root') as HTMLElement;
     app.innerHTML = this.getTemplate();
 
     this.todoBoard.bindEvents();
