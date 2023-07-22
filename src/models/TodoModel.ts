@@ -67,6 +67,7 @@ const todoReducer = (state: InitialState, action: Action) => {
     case ADD_TODO: {
       if (action.payload._brand === 'add') {
         const targetTodo = state[action.payload.todoType];
+        console.log('targetTodo =', targetTodo);
 
         if (action.payload.order === 'front') {
           targetTodo.unshift(action.payload.text);
