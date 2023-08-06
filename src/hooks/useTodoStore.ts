@@ -103,11 +103,12 @@ const todoReducer = (state: InitialState, action: Action): any => {
     }
 
     case DELETE_TODO: {
-      const targetTodo = state[action.payload.todoType];
+      const targetTodo = [...state[action.payload.todoType]];
+
       return {
         ...state,
-        [action.payload.todoType]: targetTodo?.filter(
-          (todo) => todo !== action.payload.text || [],
+        [action.payload.todoType]: targetTodo.filter(
+          (todo) => todo !== action.payload.text,
         ),
       };
     }
